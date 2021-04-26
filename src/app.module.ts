@@ -1,29 +1,34 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ConfigModule } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { GoogleStrategy } from './auth/google.strategy';
 import { CategoryModule } from './category/category.module';
 import { Category } from './category/entities/category.entity';
 import { Recipe } from './recipe/entities/recipe.entity';
 import { RecipeModule } from './recipe/recipe.module';
+import { User } from './user/entities/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       appname: 'recipe-app',
-      type: 'mongodb',
-      host: 'localhost',
-      port: 27017,
-      // username: 'root',
-      // password: 'SqlAdmin$123',
-      database: 'recipe-db',
-      entities: [Category, Recipe],
+      type: process.env.DB_TYPE as any,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT as any,
+      database: process.env.DB_NAME,
+      // username: process.env.DB_USERNAME,
+      // password: process.env.DB_PASSWORD,
+      entities: [Category, Recipe, User],
       //entities: ['../**/*.entity.{ts,js}'],
       synchronize: true,
+      useUnifiedTopology: true,
     }),
     ThrottlerModule.forRoot({
       ttl: 30,
@@ -32,15 +37,9 @@ import { RecipeModule } from './recipe/recipe.module';
     RecipeModule,
     CategoryModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
-    GoogleStrategy,
-  ],
+  providers: [AppService],
 })
 export class AppModule {}
