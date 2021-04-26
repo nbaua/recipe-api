@@ -3,7 +3,21 @@ import { NestFactory } from '@nestjs/core';
 import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const mongooseMorgan = require('mongoose-morgan');
+const morgan = require('mongoose-morgan');
+morgan.token('request', function (req: any, _: any) {
+  return JSON.stringify({
+    url: req.url,
+    params: req.params,
+    method: req.method,
+    httpVersion: req.httpVersion,
+  });
+});
+
+morgan.token('response', function (_: any, res: any) {
+  return JSON.stringify({
+    statusCode: res.statusCode,
+  });
+});
 
 async function bootstrap() {
   const port = 3000;
@@ -11,12 +25,16 @@ async function bootstrap() {
   app.enableCors();
   app.use(helmet());
   app.use(
-    mongooseMorgan(
+    morgan(
       {
-        connectionString: 'mongodb://localhost:27017/logs-db',
+        connectionString: `mongodb://localhost:27017/recipe-db`,
       },
-      {},
-      'tiny',
+      {
+        skip: function (req, res) {
+          return res.statusCode < 400;
+        },
+      },
+      'Request: :request - Response: :response',
     ),
   );
   app.useGlobalPipes(new ValidationPipe());
