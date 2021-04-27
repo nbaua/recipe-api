@@ -4,8 +4,10 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -25,8 +27,11 @@ export class RecipeController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.recipeService.findAll();
+  findAll(
+    @Query('page', ParseIntPipe) page = 1,
+    @Query('limit', ParseIntPipe) limit = 10,
+  ) {
+    return this.recipeService.findAll(page, limit);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -28,8 +28,18 @@ export class RecipeService {
     return newRecipe;
   }
 
-  async findAll() {
-    return await this.recipeRepository.find({});
+  async findAll(page: number, limit: number) {
+    const [result, total] = await this.recipeRepository.findAndCount({
+      //where: { name: Like('%' + keyword + '%') },
+      where: { published: true },
+      order: { id: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return {
+      data: result,
+      count: total,
+    };
   }
 
   async findOne(id: string) {
