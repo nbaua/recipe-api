@@ -11,6 +11,7 @@ export class RecipeService {
     this.recipeRepository = this._connection.getRepository(Recipe);
   }
 
+  //not implemented completely yet
   async create(createRecipeDto: CreateRecipeDto) {
     const newRecipe = this.recipeRepository.create();
 
@@ -20,7 +21,7 @@ export class RecipeService {
     newRecipe.name = createRecipeDto.name;
     newRecipe.pictureUrl = createRecipeDto.pictureUrl;
     newRecipe.servings = createRecipeDto.servings;
-    newRecipe.source = createRecipeDto.source;
+    // newRecipe.source = createRecipeDto.source;
     newRecipe.sourceUrl = createRecipeDto.sourceUrl;
 
     await this.recipeRepository.save(newRecipe);
@@ -28,7 +29,7 @@ export class RecipeService {
   }
 
   async findAll() {
-    return await this.recipeRepository.find();
+    return await this.recipeRepository.find({});
   }
 
   async findOne(id: string) {

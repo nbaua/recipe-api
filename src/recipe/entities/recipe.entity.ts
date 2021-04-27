@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Ingredient } from './ingredient.entity';
+import { Instruction } from './instruction.entity';
 import { Time } from './time.entity';
 
 @Entity('recipe')
@@ -14,19 +15,31 @@ export class Recipe {
   id: string;
 
   @Column()
-  name: string;
+  category: string;
 
   @Column()
-  category: string;
+  description: string;
+
+  @Column(() => Ingredient)
+  ingredients: Ingredient[];
+
+  @Column(() => Instruction)
+  instructions: Instruction[];
+
+  @Column()
+  likes: number;
+
+  @Column()
+  name: string;
 
   @Column()
   pictureUrl: string;
 
   @Column()
-  servings: string;
+  published: boolean;
 
-  @Column() //to-be deprecated
-  source: string;
+  @Column()
+  servings: string;
 
   @Column() //to-be deprecated
   sourceUrl: string;
@@ -34,8 +47,8 @@ export class Recipe {
   @Column(() => Time)
   times: Time[];
 
-  @Column(() => Ingredient)
-  ingredients: Ingredient[];
+  @Column()
+  views: number;
 
   @CreateDateColumn()
   createdAt: Date;

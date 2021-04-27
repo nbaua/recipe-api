@@ -1,15 +1,37 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
+  IsNumber,
   IsString,
   MaxLength,
   MinLength,
   ValidateNested,
 } from 'class-validator';
 import { Ingredient } from './ingredient.dto';
+import { Instruction } from './instruction.dto';
 import { Time } from './time.dto';
 
 export class CreateRecipeDto {
+  @IsString()
+  category: string;
+
+  @IsString()
+  description: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Ingredient)
+  ingredients: Ingredient[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Instruction)
+  instructions: Instruction[];
+
+  @IsNumber()
+  likes: number;
+
   @IsString()
   @MinLength(4, {
     message: 'Name is too short',
@@ -20,16 +42,13 @@ export class CreateRecipeDto {
   name: string;
 
   @IsString()
-  category: string;
-
-  @IsString()
   pictureUrl: string;
+
+  @IsBoolean()
+  published: boolean;
 
   @IsString()
   servings: string;
-
-  @IsString() //to-be deprecated
-  source: string;
 
   @IsString() //to-be deprecated
   sourceUrl: string;
@@ -39,8 +58,6 @@ export class CreateRecipeDto {
   @Type(() => Time)
   times: Time[];
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => Ingredient)
-  ingredients: Ingredient[];
+  @IsNumber()
+  views: number;
 }
