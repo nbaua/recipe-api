@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { Connection, Repository } from 'typeorm';
+import { Connection, MongoRepository } from 'typeorm';
 import { CreateRecipeDto } from './dto/create-recipe.dto';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { Recipe } from './entities/recipe.entity';
 
 @Injectable()
 export class RecipeService {
-  private recipeRepository: Repository<Recipe>;
+  private recipeRepository: MongoRepository<Recipe>;
   constructor(private _connection: Connection) {
-    this.recipeRepository = this._connection.getRepository(Recipe);
+    this.recipeRepository = this._connection.getMongoRepository(Recipe);
   }
 
   //not implemented completely yet
