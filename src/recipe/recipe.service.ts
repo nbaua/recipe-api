@@ -30,8 +30,19 @@ export class RecipeService {
 
   async findAll(page: number, limit: number) {
     const [result, total] = await this.recipeRepository.findAndCount({
-      //where: { name: Like('%' + keyword + '%') },
-      where: { published: true },
+      where: {
+        $and: [
+          {
+            published: true,
+          },
+          {
+            pictureUrl: {
+              $ne: '',
+            },
+          },
+        ],
+      },
+      //where: { $and: [{ published: true }, { servings: '5' }] },
       order: { id: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,
