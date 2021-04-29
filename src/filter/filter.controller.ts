@@ -6,13 +6,16 @@ import {
   ParseIntPipe,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { FilterService } from './filter.service';
 
 @Controller('filter')
 export class FilterController {
   constructor(private readonly filterService: FilterService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('recipes')
   public async getRecipes(
     @Res() res,
@@ -26,6 +29,7 @@ export class FilterController {
     return res.status(HttpStatus.OK).json(recipe);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('random')
   public async getRandomRecipes(
     @Res() res,
@@ -38,6 +42,7 @@ export class FilterController {
     return res.status(HttpStatus.OK).json(recipe);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('search')
   public async getRecipesByTag(
     @Res() res,
