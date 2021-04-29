@@ -44,5 +44,7 @@ export class Recipe {
   // @Prop()
   // updatedAt: Date;
 }
-
-export const RecipeSchema = SchemaFactory.createForClass(Recipe);
+export const RecipeSchema = SchemaFactory.createForClass(Recipe).index({
+  name: 'text',
+  description: 'text',
+});

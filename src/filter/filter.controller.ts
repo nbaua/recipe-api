@@ -24,4 +24,18 @@ export class FilterController {
     }
     return res.status(HttpStatus.OK).json(recipe);
   }
+
+  @Get('search')
+  public async getRecipesByTag(
+    @Res() res,
+    @Query('tag') tag,
+    @Query('page', ParseIntPipe) page = 1,
+    @Query('limit', ParseIntPipe) limit = 10,
+  ) {
+    const recipe = await this.filterService.getRecipesByTag(tag, page, limit);
+    if (!recipe) {
+      throw new NotFoundException('Recipes does not exist!');
+    }
+    return res.status(HttpStatus.OK).json(recipe);
+  }
 }
