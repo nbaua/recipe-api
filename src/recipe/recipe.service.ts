@@ -28,6 +28,7 @@ export class RecipeService {
     return newRecipe;
   }
 
+  //deprecated in favor of filter match and aggregation
   async findAll(page: number, limit: number) {
     const [result, total] = await this.recipeRepository.findAndCount({
       where: {

@@ -4,10 +4,8 @@ import {
   Delete,
   Get,
   Param,
-  ParseIntPipe,
   Patch,
   Post,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -25,14 +23,14 @@ export class RecipeController {
     return this.recipeService.create(createRecipeDto);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  findAll(
-    @Query('page', ParseIntPipe) page = 1,
-    @Query('limit', ParseIntPipe) limit = 10,
-  ) {
-    return this.recipeService.findAll(page, limit);
-  }
+  // @UseGuards(JwtAuthGuard) -- deprecated in favour of aggregation and match
+  // @Get()
+  // findAll(
+  //   @Query('page', ParseIntPipe) page = 1,
+  //   @Query('limit', ParseIntPipe) limit = 10,
+  // ) {
+  //   return this.recipeService.findAll(page, limit);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
