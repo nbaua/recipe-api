@@ -27,7 +27,7 @@ async function bootstrap() {
   app.use(
     morgan(
       {
-        connectionString: `mongodb://localhost:27017/recipe-db`,
+        connectionString: process.env.DB_CONN as any,
       },
       {
         skip: function (req, res) {

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -8,6 +9,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { Category } from './category/entities/category.entity';
+import { FilterModule } from './filter/filter.module';
 import { Recipe } from './recipe/entities/recipe.entity';
 import { RecipeModule } from './recipe/recipe.module';
 import { User } from './user/entities/user.entity';
@@ -31,6 +33,7 @@ import { UserModule } from './user/user.module';
       synchronize: true,
       useUnifiedTopology: true,
     }),
+    MongooseModule.forRoot(process.env.DB_CONN),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 10,
@@ -39,6 +42,7 @@ import { UserModule } from './user/user.module';
     CategoryModule,
     AuthModule,
     UserModule,
+    FilterModule,
   ],
   controllers: [AppController],
   providers: [
