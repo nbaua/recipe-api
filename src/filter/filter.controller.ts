@@ -13,6 +13,19 @@ import { FilterService } from './filter.service';
 export class FilterController {
   constructor(private readonly filterService: FilterService) {}
 
+  @Get('recipes')
+  public async getRecipes(
+    @Res() res,
+    @Query('page', ParseIntPipe) page = 1,
+    @Query('limit', ParseIntPipe) limit = 10,
+  ) {
+    const recipe = await this.filterService.getRecipes(page, limit);
+    if (!recipe) {
+      throw new NotFoundException('Recipes does not exist!');
+    }
+    return res.status(HttpStatus.OK).json(recipe);
+  }
+
   @Get('random')
   public async getRandomRecipes(
     @Res() res,

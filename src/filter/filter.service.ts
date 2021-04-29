@@ -10,15 +10,89 @@ export class FilterService {
     private readonly recipeModel: Model<Recipe | any>,
   ) {}
 
-  // public async findAll(paginationQuery: PaginationQueryDto): Promise<Recipe[]> {
-  //   const { limit, offset } = paginationQuery;
+  public async getRecipes(page = 1, limit = 10): Promise<Recipe> {
+    const skip: number = (page - 1) * limit;
 
-  //   return await this.recipeModel
-  //     .find()
-  //     .skip(+offset)
-  //     .limit(+limit)
-  //     .exec();
-  // }
+    const recipe = await this.recipeModel
+      .aggregate([
+        {
+          $match: {
+            $and: [
+              {
+                published: true,
+                pictureUrl: {
+                  $ne: '',
+                },
+              },
+            ],
+          },
+        },
+        { $sort: { name: 1 } },
+        {
+          $project: {
+            category: 1,
+            description: 1,
+            likes: 1,
+            name: 1,
+            pictureUrl: 1,
+            views: 1,
+          },
+        },
+        {
+          $facet: {
+            total: [
+              {
+                $count: 'createdAt',
+              },
+            ],
+            data: [
+              {
+                $addFields: {
+                  _id: '$_id',
+                },
+              },
+            ],
+          },
+        },
+        {
+          $unwind: '$total',
+        },
+        {
+          $project: {
+            data: {
+              $slice: [
+                '$data',
+                skip,
+                {
+                  $ifNull: [limit, '$total.createdAt'],
+                },
+              ],
+            },
+            meta: {
+              total: '$total.createdAt',
+              limit: {
+                $literal: limit,
+              },
+              page: {
+                $literal: skip / limit + 1,
+              },
+              pages: {
+                $ceil: {
+                  $divide: ['$total.createdAt', limit],
+                },
+              },
+            },
+          },
+        },
+      ])
+      .exec();
+
+    if (!recipe) {
+      throw new NotFoundException(`Recipes  not found`);
+    }
+
+    return recipe;
+  }
 
   public async getRandomRecipes(limit: number): Promise<Recipe> {
     const recipe = await this.recipeModel
@@ -87,12 +161,12 @@ export class FilterService {
         { $sort: { name: 1 } },
         {
           $project: {
-            // category: 1,
-            // description: 1,
-            // likes: 1,
+            category: 1,
+            description: 1,
+            likes: 1,
             name: 1,
-            // pictureUrl: 1,
-            // views: 1,
+            pictureUrl: 1,
+            views: 1,
           },
         },
         {
