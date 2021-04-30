@@ -20,7 +20,7 @@ morgan.token('response', function (_: any, res: any) {
 });
 
 async function bootstrap() {
-  const port = 3000;
+  const port = process.env.APP_PORT as any | 31000;
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.use(helmet());
