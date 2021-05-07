@@ -41,6 +41,22 @@ export class FilterController {
     }
     return res.status(HttpStatus.OK).json(recipe);
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('category')
+  public async getRecipesByCategory(
+    @Res() res,
+    @Query('limit', ParseIntPipe) limit = 10,
+    @Query('category') category,
+  ) {
+    const recipe = await this.filterService.getRecipesByCategory(
+      limit,
+      category,
+    );
+    if (!recipe) {
+      throw new NotFoundException('Recipes does not exist!');
+    }
+    return res.status(HttpStatus.OK).json(recipe);
+  }
 
   @UseGuards(JwtAuthGuard)
   @Get('search')
