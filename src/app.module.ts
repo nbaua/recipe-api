@@ -25,7 +25,7 @@ import { UserModule } from './user/user.module';
       type: 'mongodb',
       useNewUrlParser: true,
       url: process.env.DB_CONN,
-      ssl: true,
+      // ssl: true /** DO NOT TURN THIS ON UNLESS ON SSL PRODUCTION SERVER**/,
       // type: process.env.DB_TYPE as any,
       // host: process.env.DB_HOST,
       // port: process.env.DB_PORT as any,
@@ -37,7 +37,10 @@ import { UserModule } from './user/user.module';
       synchronize: true,
       useUnifiedTopology: true,
     }),
-    MongooseModule.forRoot(process.env.DB_CONN),
+    MongooseModule.forRoot(process.env.DB_CONN, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+    }),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 10,
