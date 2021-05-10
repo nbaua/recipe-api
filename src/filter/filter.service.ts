@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Recipe } from './schemas/recipe.schema';
 
 @Injectable()
@@ -133,6 +133,7 @@ export class FilterService {
 
     return recipe;
   }
+
   public async getRecipesByCategory(
     limit: number,
     category: string,
@@ -176,6 +177,33 @@ export class FilterService {
 
     return recipe;
   }
+
+  public async getRecipesById(id: string): Promise<Recipe> {
+    const recipe = await this.recipeModel
+      .aggregate([
+        {
+          $match: {
+            $and: [
+              {
+                published: true,
+                pictureUrl: {
+                  $ne: '',
+                },
+                _id: Types.ObjectId(id),
+              },
+            ],
+          },
+        },
+      ])
+      .exec();
+
+    if (!recipe) {
+      throw new NotFoundException(`Recipes  not found`);
+    }
+
+    return recipe;
+  }
+
   public async getRecipesByTag(
     tag: string,
     page = 1,

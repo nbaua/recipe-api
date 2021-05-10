@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   Patch,
   Post,
@@ -32,11 +31,11 @@ export class RecipeController {
   //   return this.recipeService.findAll(page, limit);
   // }
 
-  @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.recipeService.findOne(id);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.recipeService.findOne(id);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')

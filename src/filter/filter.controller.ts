@@ -16,6 +16,17 @@ export class FilterController {
   constructor(private readonly filterService: FilterService) {}
 
   @UseGuards(JwtAuthGuard)
+  @Get('recipe')
+  public async getRecipesById(@Res() res, @Query('id') id) {
+    console.log('Query', id);
+    const recipe = await this.filterService.getRecipesById(id);
+    if (!recipe) {
+      throw new NotFoundException('Recipes does not exist!');
+    }
+    return res.status(HttpStatus.OK).json(recipe);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('recipes')
   public async getRecipes(
     @Res() res,
