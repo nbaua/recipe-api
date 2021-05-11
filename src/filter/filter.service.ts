@@ -28,7 +28,7 @@ export class FilterService {
             ],
           },
         },
-        { $sort: { name: 1 } },
+        { $sort: { name: -1 } },
         {
           $project: {
             category: 1,
