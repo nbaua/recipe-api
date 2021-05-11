@@ -34,6 +34,8 @@ export class Recipe {
 
   //   @Prop(() => Time)
   //   times: Time[];
+  @Prop()
+  tags: string[];
 
   @Prop()
   views: number;

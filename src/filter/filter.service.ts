@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Recipe } from './schemas/recipe.schema';
+const keyword = require('gramophone');
 
 @Injectable()
 export class FilterService {
@@ -200,6 +201,13 @@ export class FilterService {
     if (!recipe) {
       throw new NotFoundException(`Recipes  not found`);
     }
+
+    const kw = keyword.extract(recipe[0].description + ' ' + recipe[0].name, {
+      ngrams: [1],
+      stem: true,
+      limit: 5,
+    });
+    recipe[0].tags = kw;
 
     return recipe;
   }
