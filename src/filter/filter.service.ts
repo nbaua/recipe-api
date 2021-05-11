@@ -209,7 +209,7 @@ export class FilterService {
     });
     recipe[0].tags = kw;
 
-    return recipe;
+    return recipe[0];
   }
 
   public async getRecipesByTag(
