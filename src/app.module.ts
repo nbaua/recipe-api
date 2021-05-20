@@ -9,6 +9,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { Category } from './category/entities/category.entity';
+import { FavoriteModule } from './favorite/favorite.module';
 import { FilterModule } from './filter/filter.module';
 import { Recipe } from './recipe/entities/recipe.entity';
 import { RecipeModule } from './recipe/recipe.module';
@@ -50,6 +51,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     UserModule,
     FilterModule,
+    FavoriteModule,
   ],
   controllers: [AppController],
   providers: [

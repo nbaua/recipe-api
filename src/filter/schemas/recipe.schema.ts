@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
 
 @Schema({ collection: 'recipe', id: true, timestamps: true })
 export class Recipe {
@@ -39,6 +40,11 @@ export class Recipe {
 
   @Prop()
   views: number;
+
+  //Just References
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
+  user: MongooseSchema.Types.ObjectId;
 
   // @Prop()
   // createdAt: Date;
