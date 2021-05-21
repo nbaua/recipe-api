@@ -6,4 +6,6 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   password: string;
+
+  favoriteRecipes: string[];
 }

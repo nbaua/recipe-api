@@ -23,6 +23,7 @@ export class UserService {
         createUserDto.password,
         bcrypt.genSaltSync(10),
       );
+      newUser.favoriteRecipes = [];
 
       await this.userRepository.save(newUser);
 

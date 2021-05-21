@@ -19,6 +19,9 @@ export class User extends BaseEntity {
   @Column({ type: String })
   password: string;
 
+  @Column({ type: String, array: true })
+  favoriteRecipes: string[];
+
   @Column()
   @CreateDateColumn()
   createdAt: Date;
