@@ -37,4 +37,42 @@ export class FavoriteService {
 
     return recipes;
   }
+
+  public async findByIdAndUpdate(userId, recipeId) {
+    let result = null;
+    const user = await this.userModel.findById(userId);
+
+    if (user) {
+      const recipes = user.favoriteRecipes;
+      if (recipes.indexOf(recipeId) === -1) recipes.push(recipeId);
+
+      result = await this.userModel.findByIdAndUpdate(
+        userId,
+        {
+          favoriteRecipes: recipes,
+        },
+        { new: true },
+      );
+    }
+
+    return result;
+  }
+
+  public async findByIdAndRemove(userId, recipeId) {
+    let result = null;
+    const user = await this.userModel.findById(userId);
+
+    if (user) {
+      const recipes = user.favoriteRecipes.filter((r) => r != recipeId);
+      result = await this.userModel.findByIdAndUpdate(
+        userId,
+        {
+          favoriteRecipes: recipes,
+        },
+        { new: true },
+      );
+    }
+
+    return result;
+  }
 }
