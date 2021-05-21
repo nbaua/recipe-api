@@ -15,7 +15,21 @@ export class FavoriteService {
   public async getFavoriteRecipes(userId, page = 1, limit = 10) {
     const recipes = await this.userModel
       .find(Types.ObjectId(userId))
-      .populate('favoriteRecipes');
+      .populate({
+        path: 'favoriteRecipes',
+        match: {
+          $and: [
+            {
+              published: true,
+              pictureUrl: {
+                $ne: '',
+              },
+            },
+          ],
+        },
+        select: 'category description likes name pictureUrl views',
+      })
+      .exec();
 
     if (!recipes) {
       throw new NotFoundException(`Favorite Recipes not found`);
