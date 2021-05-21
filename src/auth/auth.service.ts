@@ -20,7 +20,8 @@ export class AuthService {
     };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      token: this.jwtService.sign(payload),
+      fr: user.favoriteRecipes, // to save a api call on load
       id: user.id,
     };
   }
