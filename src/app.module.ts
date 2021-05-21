@@ -39,6 +39,7 @@ import { UserModule } from './user/user.module';
       useUnifiedTopology: true,
     }),
     MongooseModule.forRoot(process.env.DB_CONN, {
+      useFindAndModify: false,
       useNewUrlParser: true,
       useCreateIndex: true,
     }),
