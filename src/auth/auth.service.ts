@@ -22,6 +22,7 @@ export class AuthService {
     return {
       token: this.jwtService.sign(payload),
       fr: user.favoriteRecipes, // to save a api call on load
+      lr: user.likedRecipes, // to save a api call on load
       id: user.id,
     };
   }
