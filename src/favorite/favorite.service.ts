@@ -55,7 +55,7 @@ export class FavoriteService {
       );
     }
 
-    return result;
+    return this.getFavoriteRecipesByUserId(userId);
   }
 
   public async findByIdAndRemove(userId, recipeId) {
@@ -73,6 +73,6 @@ export class FavoriteService {
       );
     }
 
-    return result;
+    return this.getFavoriteRecipesByUserId(userId);
   }
 }

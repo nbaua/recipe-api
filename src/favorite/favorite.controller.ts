@@ -28,19 +28,15 @@ export class FavoriteController {
 
   @UseGuards(JwtAuthGuard)
   @Put('add')
-  public async findByIdAndUpdate(@Body() { userId, recipeId }) {
-    const result = await this.filterService.findByIdAndUpdate(userId, recipeId);
-    return result
-      ? await this.filterService.getFavoriteRecipesByUserId(userId)
-      : null;
+  public async findByIdAndUpdate(@Res() res, @Body() { userId, recipeId }) {
+    const recipe = await this.filterService.findByIdAndUpdate(userId, recipeId);
+    return res.status(HttpStatus.OK).json(recipe[0].favoriteRecipes);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('remove')
-  public async findByIdAndRemove(@Body() { userId, recipeId }) {
-    const result = await this.filterService.findByIdAndRemove(userId, recipeId);
-    return result
-      ? await this.filterService.getFavoriteRecipesByUserId(userId)
-      : null;
+  public async findByIdAndRemove(@Res() res, @Body() { userId, recipeId }) {
+    const recipe = await this.filterService.findByIdAndRemove(userId, recipeId);
+    return res.status(HttpStatus.OK).json(recipe[0].favoriteRecipes);
   }
 }
