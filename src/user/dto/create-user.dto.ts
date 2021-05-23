@@ -8,4 +8,6 @@ export class CreateUserDto {
   password: string;
 
   favoriteRecipes: string[];
+
+  likedRecipes: string[];
 }

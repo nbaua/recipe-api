@@ -22,6 +22,9 @@ export class User extends BaseEntity {
   @Column({ type: String, array: true })
   favoriteRecipes: string[];
 
+  @Column({ type: String, array: true })
+  likedRecipes: string[];
+
   @Column()
   @CreateDateColumn()
   createdAt: Date;

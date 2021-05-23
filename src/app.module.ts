@@ -11,6 +11,7 @@ import { CategoryModule } from './category/category.module';
 import { Category } from './category/entities/category.entity';
 import { FavoriteModule } from './favorite/favorite.module';
 import { FilterModule } from './filter/filter.module';
+import { LikedModule } from './liked/liked.module';
 import { Recipe } from './recipe/entities/recipe.entity';
 import { RecipeModule } from './recipe/recipe.module';
 import { User } from './user/entities/user.entity';
@@ -53,6 +54,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     FilterModule,
     FavoriteModule,
+    LikedModule,
   ],
   controllers: [AppController],
   providers: [
