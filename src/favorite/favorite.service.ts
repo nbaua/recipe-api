@@ -12,7 +12,7 @@ export class FavoriteService {
     private readonly userModel: Model<User | any>,
   ) {}
 
-  public async getFavoriteRecipes(userId, page = 1, limit = 10) {
+  public async getFavoriteRecipesByUserId(userId, page = 1, limit = 10) {
     const recipes = await this.userModel
       .find(Types.ObjectId(userId))
       .populate({

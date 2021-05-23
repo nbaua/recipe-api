@@ -18,8 +18,8 @@ export class FavoriteController {
 
   @UseGuards(JwtAuthGuard)
   @Get('')
-  public async getRecipesById(@Res() res, @Query('id') id) {
-    const recipe = await this.filterService.getFavoriteRecipes(id);
+  public async getFavoriteRecipesByUserId(@Res() res, @Query('id') id) {
+    const recipe = await this.filterService.getFavoriteRecipesByUserId(id);
     if (!recipe) {
       throw new NotFoundException('Favorite Recipes does not exist!');
     }
@@ -28,13 +28,19 @@ export class FavoriteController {
 
   @UseGuards(JwtAuthGuard)
   @Put('add')
-  findByIdAndUpdate(@Body() { userId, recipeId }) {
-    return this.filterService.findByIdAndUpdate(userId, recipeId);
+  public async findByIdAndUpdate(@Body() { userId, recipeId }) {
+    const result = await this.filterService.findByIdAndUpdate(userId, recipeId);
+    return result
+      ? await this.filterService.getFavoriteRecipesByUserId(userId)
+      : null;
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('remove')
-  findByIdAndRemove(@Body() { userId, recipeId }) {
-    return this.filterService.findByIdAndRemove(userId, recipeId);
+  public async findByIdAndRemove(@Body() { userId, recipeId }) {
+    const result = await this.filterService.findByIdAndRemove(userId, recipeId);
+    return result
+      ? await this.filterService.getFavoriteRecipesByUserId(userId)
+      : null;
   }
 }
