@@ -23,7 +23,7 @@ export class FavoriteController {
     if (!recipe) {
       throw new NotFoundException('Favorite Recipes does not exist!');
     }
-    return res.status(HttpStatus.OK).json(recipe);
+    return res.status(HttpStatus.OK).json(recipe[0].favoriteRecipes);
   }
 
   @UseGuards(JwtAuthGuard)
