@@ -24,6 +24,7 @@ export class UserService {
         bcrypt.genSaltSync(10),
       );
       newUser.favoriteRecipes = [];
+      newUser.likedRecipes = [];
 
       await this.userRepository.save(newUser);
 
