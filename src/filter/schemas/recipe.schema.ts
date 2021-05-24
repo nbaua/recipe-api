@@ -9,15 +9,6 @@ export class Recipe {
   @Prop()
   description: string;
 
-  //   @Prop(() => Ingredient)
-  //   ingredients: Ingredient[];
-
-  //   @Prop(() => Instruction)
-  //   instructions: Instruction[];
-
-  @Prop()
-  likes: number;
-
   @Prop()
   name: string;
 
@@ -33,24 +24,19 @@ export class Recipe {
   @Prop() //to-be deprecated
   sourceUrl: string;
 
-  //   @Prop(() => Time)
-  //   times: Time[];
   @Prop()
   tags: string[];
 
-  @Prop()
+  @Prop({ type: Number })
+  likes: number;
+
+  @Prop({ type: Number })
   views: number;
 
   //Just References
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
   user: MongooseSchema.Types.ObjectId;
-
-  // @Prop()
-  // createdAt: Date;
-
-  // @Prop()
-  // updatedAt: Date;
 }
 export const RecipeSchema = SchemaFactory.createForClass(Recipe).index({
   name: 'text',
