@@ -79,7 +79,7 @@ export class LikedService {
         );
 
         await this.recipeModel.findByIdAndUpdate(recipeId, {
-          $dec: { likes: 1 } as any, // this is a hack as typegoose issue #44697 PR still pending
+          $inc: { likes: -1 } as any, // this is a hack as typegoose issue #44697 PR still pending
         });
       }
     }
