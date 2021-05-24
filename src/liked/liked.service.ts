@@ -43,15 +43,21 @@ export class LikedService {
 
     if (user) {
       const recipes = user.likedRecipes;
-      if (recipes.indexOf(recipeId) === -1) recipes.push(recipeId);
+      if (!user.likedRecipes.includes(recipeId)) {
+        recipes.push(recipeId);
 
-      await this.userModel.findByIdAndUpdate(
-        userId,
-        {
-          likedRecipes: recipes,
-        },
-        { new: true },
-      );
+        await this.userModel.findByIdAndUpdate(
+          userId,
+          {
+            likedRecipes: recipes,
+          },
+          { new: true },
+        );
+
+        await this.recipeModel.findByIdAndUpdate(recipeId, {
+          $inc: { likes: 1 } as any, // this is a hack as typegoose issue #44697 PR still pending
+        });
+      }
     }
 
     return this.getLikedRecipesByUserId(userId);
@@ -61,14 +67,21 @@ export class LikedService {
     const user = await this.userModel.findById(userId);
 
     if (user) {
-      const recipes = user.likedRecipes.filter((r) => r != recipeId);
-      await this.userModel.findByIdAndUpdate(
-        userId,
-        {
-          likedRecipes: recipes,
-        },
-        { new: true },
-      );
+      if (user.likedRecipes.includes(recipeId)) {
+        const recipes = user.likedRecipes.filter((r: any) => r != recipeId);
+
+        await this.userModel.findByIdAndUpdate(
+          userId,
+          {
+            likedRecipes: recipes,
+          },
+          { new: true },
+        );
+
+        await this.recipeModel.findByIdAndUpdate(recipeId, {
+          $dec: { likes: 1 } as any, // this is a hack as typegoose issue #44697 PR still pending
+        });
+      }
     }
 
     return this.getLikedRecipesByUserId(userId);
