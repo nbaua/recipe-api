@@ -4,6 +4,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdminModule } from './admin/admin.module';
+import { Admin } from './admin/entities/admin.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -34,7 +36,7 @@ import { UserModule } from './user/user.module';
       // database: process.env.DB_NAME,
       // username: process.env.DB_USERNAME,
       // password: process.env.DB_PASSWORD,
-      entities: [Category, Recipe, User],
+      entities: [Category, Recipe, User, Admin],
       //entities: ['../**/*.entity.{ts,js}'],
       synchronize: true,
       useUnifiedTopology: true,
@@ -55,6 +57,7 @@ import { UserModule } from './user/user.module';
     FilterModule,
     FavoriteModule,
     LikedModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [
