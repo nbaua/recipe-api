@@ -1,5 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { AdminService } from 'src/admin/admin.service';
+import { Admin } from 'src/admin/entities/admin.entity';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/user.service';
 import { AuthDto } from './dto/auth.dto';
@@ -7,6 +9,7 @@ import { AuthDto } from './dto/auth.dto';
 @Injectable()
 export class AuthService {
   constructor(
+    private adminService: AdminService,
     private usersService: UserService,
     private jwtService: JwtService,
   ) {}
@@ -37,5 +40,33 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  /* ADMIN */
+
+  async adminLogin(authDto: AuthDto) {
+    const admin = await this.validateAdminUser(authDto);
+
+    const payload = {
+      userId: admin.id,
+      email: admin.email,
+    };
+
+    return {
+      token: this.jwtService.sign(payload),
+      id: admin.id,
+    };
+  }
+
+  async validateAdminUser(authDto: AuthDto): Promise<Admin> {
+    const { email, password } = authDto;
+
+    const admin = await this.adminService.findByEmail(email);
+    // const pwd = user.password;
+    if (!(await admin?.validatePassword(password))) {
+      throw new UnauthorizedException();
+    }
+
+    return admin;
   }
 }
