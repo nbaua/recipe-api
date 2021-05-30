@@ -36,7 +36,7 @@ export class CreateRecipeDto {
   @MinLength(4, {
     message: 'Name is too short',
   })
-  @MaxLength(50, {
+  @MaxLength(250, {
     message: 'Name is too long',
   })
   name: string;
