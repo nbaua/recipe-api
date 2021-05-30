@@ -9,9 +9,9 @@ export class Ingredient {
   @IsString()
   amount: string;
 
-  @IsString()
-  keyword!: null | string;
+  // @IsString()
+  // keyword!: null | string;
 
-  @IsString()
-  __typename: string;
+  // @IsString()
+  // __typename: string;
 }

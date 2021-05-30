@@ -10,9 +10,9 @@ export class Ingredient {
   @Column()
   amount: string;
 
-  @Column('text', { nullable: true })
-  keyword!: null | string;
+  // @Column('text', { nullable: true })
+  // keyword!: null | string;
 
-  @Column()
-  __typename: string;
+  // @Column()
+  // __typename: string;
 }
