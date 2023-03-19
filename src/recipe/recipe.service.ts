@@ -55,11 +55,11 @@ export class RecipeService {
   }
 
   async findOne(id: string) {
-    return await this.recipeRepository.findOne(id);
+    return await this.recipeRepository.findOne({where : {id: id}});
   }
 
   async update(id: string, updateRecipeDto: UpdateRecipeDto) {
-    const recipe = await this.recipeRepository.findOneOrFail(id);
+    const recipe = await this.recipeRepository.findOneOrFail({where : {id: id}});
     if (recipe) {
       await this.recipeRepository.update(id, updateRecipeDto);
     }

@@ -26,11 +26,11 @@ export class CategoryService {
   }
 
   async findOne(id: string) {
-    return await this.categoryRepository.findOne(id);
+    return await this.categoryRepository.findOne({where : {id: id}});
   }
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    const category = await this.categoryRepository.findOneOrFail(id);
+    const category = await this.categoryRepository.findOneOrFail({where : {id: id}});
     if (category) {
       await this.categoryRepository.update(id, updateCategoryDto);
     }

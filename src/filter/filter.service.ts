@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { Recipe } from './schemas/recipe.schema';
 const keyword = require('gramophone');
 
@@ -8,10 +8,10 @@ const keyword = require('gramophone');
 export class FilterService {
   constructor(
     @InjectModel(Recipe.name)
-    private readonly recipeModel: Model<Recipe | any>,
+    private readonly recipeModel: Model<Recipe[] | any[]>,
   ) {}
 
-  public async getRecipes(page = 1, limit = 10): Promise<Recipe> {
+  public async getRecipes(page = 1, limit = 10): Promise<Recipe[]> {
     const skip: number = (page - 1) * limit;
 
     const recipe = await this.recipeModel
@@ -95,7 +95,7 @@ export class FilterService {
     return recipe;
   }
 
-  public async getRandomRecipes(limit: number): Promise<Recipe> {
+  public async getRandomRecipes(limit: number): Promise<Recipe[]> {
     const recipe = await this.recipeModel
       .aggregate([
         {
@@ -138,7 +138,7 @@ export class FilterService {
   public async getRecipesByCategory(
     limit: number,
     category: string,
-  ): Promise<Recipe> {
+  ): Promise<Recipe[]> {
     const recipe = await this.recipeModel
       .aggregate([
         {
@@ -179,7 +179,7 @@ export class FilterService {
     return recipe;
   }
 
-  public async getRecipesById(id: string): Promise<Recipe> {
+  public async getRecipesById(id: string): Promise<Recipe[]> {
     const recipe = await this.recipeModel
       .aggregate([
         {
@@ -190,7 +190,7 @@ export class FilterService {
                 pictureUrl: {
                   $ne: '',
                 },
-                _id: Types.ObjectId(id),
+                _id: new mongoose.Types.ObjectId(id),
               },
             ],
           },
@@ -216,7 +216,7 @@ export class FilterService {
     tag: string,
     page = 1,
     limit = 10,
-  ): Promise<Recipe> {
+  ): Promise<Recipe[]> {
     const skip: number = (page - 1) * limit;
 
     const recipe = await this.recipeModel

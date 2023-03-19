@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import mongoose, { Model, Types } from 'mongoose';
 import { Recipe } from '../filter/schemas/recipe.schema';
 import { User } from '../user/schemas/user.schema';
 
@@ -14,7 +14,7 @@ export class LikedService {
 
   public async getLikedRecipesByUserId(userId) {
     const recipes = await this.userModel
-      .find(Types.ObjectId(userId))
+      .find(new mongoose.Types.ObjectId(userId))
       .populate({
         path: 'likedRecipes',
         match: {

@@ -33,14 +33,14 @@ export class UserService {
     } else return null;
   }
 
-  async showById(id: string): Promise<User> {
-    const user = await this.userRepository.findOne(id);
+  async showById(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({where : {id: id}});
     delete user.password;
     return user;
   }
 
   async findById(id: number) {
-    return await User.findOne(id);
+    return await User.findOne({where : {id: id}});
   }
 
   async findByEmail(email: string) {
