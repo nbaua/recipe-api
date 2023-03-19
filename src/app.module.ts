@@ -28,6 +28,9 @@ import { UserModule } from './user/user.module';
       appname: 'recipe-app',
       type: 'mongodb',
       useNewUrlParser: true,
+      useUnifiedTopology: true,
+      synchronize: true,
+
       url: process.env.DB_CONN,
       // ssl: true /** DO NOT TURN THIS ON UNLESS ON SSL PRODUCTION SERVER**/,
       // type: process.env.DB_TYPE as any,
@@ -36,15 +39,13 @@ import { UserModule } from './user/user.module';
       // database: process.env.DB_NAME,
       // username: process.env.DB_USERNAME,
       // password: process.env.DB_PASSWORD,
-      entities: [Category, Recipe, User, Admin],
+      // entities: [Category, Recipe, User, Admin],
       //entities: ['../**/*.entity.{ts,js}'],
-      synchronize: true,
-      useUnifiedTopology: true,
     }),
     MongooseModule.forRoot(process.env.DB_CONN, {
-      useFindAndModify: false,
+      // useFindAndModify: false, - do NOT use this - deperecated
+      // useCreateIndex: false, - do NOT use this - deperecated
       useNewUrlParser: true,
-      useCreateIndex: true,
     }),
     ThrottlerModule.forRoot({
       ttl: 60,
