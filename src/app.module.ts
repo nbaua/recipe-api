@@ -30,26 +30,13 @@ import { UserModule } from './user/user.module';
       useNewUrlParser: true,
       useUnifiedTopology: true,
       synchronize: true,
-
       url: process.env.DB_CONN,
-      // ssl: true /** DO NOT TURN THIS ON UNLESS ON SSL PRODUCTION SERVER**/,
-      // type: process.env.DB_TYPE as any,
-      // host: process.env.DB_HOST,
-      // port: process.env.DB_PORT as any,
-      // database: process.env.DB_NAME,
-      // username: process.env.DB_USERNAME,
-      // password: process.env.DB_PASSWORD,
-      // entities: [Category, Recipe, User, Admin],
-      //entities: ['../**/*.entity.{ts,js}'],
+      entities: [Category, Recipe, User, Admin],
     }),
     MongooseModule.forRoot(process.env.DB_CONN, {
       // useFindAndModify: false, - do NOT use this - deperecated
       // useCreateIndex: false, - do NOT use this - deperecated
       useNewUrlParser: true,
-    }),
-    ThrottlerModule.forRoot({
-      ttl: 60,
-      limit: 10,
     }),
     RecipeModule,
     CategoryModule,
@@ -59,6 +46,10 @@ import { UserModule } from './user/user.module';
     FavoriteModule,
     LikedModule,
     AdminModule,
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
   ],
   controllers: [AppController],
   providers: [
@@ -69,4 +60,4 @@ import { UserModule } from './user/user.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
