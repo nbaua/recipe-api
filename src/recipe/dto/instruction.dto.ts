@@ -1,8 +1,11 @@
-import { IsString } from 'class-validator';
+import { IsBoolean, IsString } from 'class-validator';
 export class Instruction {
   // @IsString()
   // _id: number;
 
+  @IsBoolean()
+  header:boolean;
+  
   @IsString()
   step: string;
 
